@@ -1,12 +1,17 @@
-% Creates Figure 3 in the manuscript
+% Creates Figure 3
+% Figure 3: Top: Transverse and sagittal slices from the reconstructed
+% dynamic image series at the time point of maximum deformation. Bottom:
+% Image lines along the RL and AP directions over time. The red lines
+% indicate which lines and time point are depicted in the other views. A:
+% Anterior; P: Posterior; R: Right; L: Left; H: Head; F: Feet.
 %
-% Copyright (c) 2026, UMC Utrecht
-% Max van Riel, m.h.c.vanriel-3@umcutrecht.nl
+% Copyright (c) 2026, UMC Utrecht Max van Riel,
+% m.h.c.vanriel-3@umcutrecht.nl
 clearvars
 close all
 clc
 
-addpath('./visualization/')
+addpath(genpath(pwd))
 
 %% Load data
 recFile = '../data/volunteer2/dynamic1_recon.h5';
