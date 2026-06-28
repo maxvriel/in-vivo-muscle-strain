@@ -1,2 +1,10 @@
+# Data files
 *.h5
 *.mrd
+
+# Exported figures
+*.eps
+*.png
+
+# Matlab autosave files
+*.asv
