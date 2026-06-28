@@ -14,7 +14,7 @@ clc
 addpath(genpath(pwd))
 
 %% Load data
-recFile = '../data/volunteer2/dynamic1_recon.h5';
+recFile = 'data/volunteer2/dynamic1_recon.h5';
 
 im = h5read(recFile, '/recon/images');
 im = abs(im.real + 1i*im.imag);
@@ -106,3 +106,6 @@ hl.Position(1) = 77.5;
 
 annotation('arrow', sum(axPos{2,2}([1,3])) + 0.8*widths(3)/sum(widths)/2*[1,1], ...
     axPos{2,2}(2) + [axPos{2,2}(4), 0] + 0.25*axPos{2,2}(4)*[-1,1], 'LineWidth', 1.5)
+
+exportgraphics(hFig, './figures/figure3.eps', 'ContentType', 'vector', 'Padding', 'figure')
+exportgraphics(hFig, './figures/figure3.png', 'Resolution', 300, 'Padding', 'figure')
