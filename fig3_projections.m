@@ -5,16 +5,15 @@
 % indicate which lines and time point are depicted in the other views. A:
 % Anterior; P: Posterior; R: Right; L: Left; H: Head; F: Feet.
 %
-% Copyright (c) 2026, UMC Utrecht Max van Riel,
-% m.h.c.vanriel-3@umcutrecht.nl
+% Copyright (c) 2026, UMC Utrecht 
+% Max van Riel, m.h.c.vanriel-3@umcutrecht.nl
 clearvars
 close all
-clc
 
 addpath(genpath(pwd))
 
 %% Load data
-recFile = 'data/volunteer2/dynamic1_recon.h5';
+recFile = 'recon/volunteer2/dynamic1_recon.h5';
 
 im = h5read(recFile, '/recon/images');
 im = abs(im.real + 1i*im.imag);
@@ -26,6 +25,7 @@ climsIm = [0, max(abs(im(:)))];
 % Remove slice oversampling
 im = im(:, :, 8:57, :);
 
+% Location of the shown slices
 xIdx = 40;
 yIdx = 39;
 zIdx = 25;
@@ -48,14 +48,10 @@ hold on
 yline(yIdx, 'r')
 xline(xIdx, 'r')
 clim(climsIm)
-hl = annotation(hFig, 'line', 'Color', 'w');
+hl = annotation(hFig, 'line', 'Color', 'w', 'X', size(im,1) - 10 + [-5,5], 'Y', size(im,2) - 10*[1,1]);
 hl.Parent = hAx;
-hl.X = size(im,1) - 10 + [-5,5];
-hl.Y = size(im,2) - 10*[1,1];
-hl = annotation(hFig, 'line', 'Color', 'w');
+hl = annotation(hFig, 'line', 'Color', 'w', 'X', size(im,1) - 10*[1,1], 'Y', size(im,2) - 10 + [-5,5]);
 hl.Parent = hAx;
-hl.X = size(im,1) - 10*[1,1];
-hl.Y = size(im,2) - 10 + [-5,5];
 text(size(im,1)-10+[0,0,-7.5,7.5], size(im,2)-10+[-7.5,7.5,0,0], {'A','P','R','L'}, ...
     'FontSize', 10, 'Color', 'w', 'HorizontalAlignment', 'center')
 
@@ -65,14 +61,10 @@ imshow(squeeze(im(xIdx,:,:,tIdx)).')
 hold on
 yline(zIdx, 'r')
 clim(climsIm)
-hl = annotation(hFig, 'line', 'Color', 'w');
+hl = annotation(hFig, 'line', 'Color', 'w', 'X', size(im,2) - 10 + [-5,5], 'Y', size(im,3) - 10*[1,1]);
 hl.Parent = hAx;
-hl.X = size(im,2) - 10 + [-5,5];
-hl.Y = size(im,3) - 10*[1,1];
-hl = annotation(hFig, 'line', 'Color', 'w');
+hl = annotation(hFig, 'line', 'Color', 'w', 'X', size(im,2) - 10*[1,1], 'Y', size(im,3) - 10 + [-5,5]);
 hl.Parent = hAx;
-hl.X = size(im,2) - 10*[1,1];
-hl.Y = size(im,3) - 10 + [-5,5];
 text(size(im,2)-10+[0,0,-7.5,7.5], size(im,3)-10+[-7.5,7.5,0,0], {'H','F','A','P'}, ...
     'FontSize', 10, 'Color', 'w', 'HorizontalAlignment', 'center')
 
