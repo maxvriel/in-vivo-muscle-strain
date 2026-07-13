@@ -43,19 +43,9 @@ for iSubj = 1:length(subjects)
     % Reconstruct validation images
     valIm = imageRecon(valData, valHeader, valCsm);
 
-    % Remove slice oversampling
-    nKz = dynHeader.encoding(1).encodedSpace.matrixSize.z;
-    nZ = dynHeader.encoding(1).reconSpace.matrixSize.z;
-    zIdx = floor((nKz-nZ)/2) + (1:nZ);
-    dynIm = dynIm(:,:,zIdx,:);
-
-    % Select right leg
-    dynIm = dynIm((1:64)+4,:,:,:);
-    valIm = valIm((1:64)+4,:,:,:);
-
-    % Take magnitude of the images
-    dynIm = abs(dynIm);
-    valIm = abs(valIm);
+    % Remove slice oversampling, select right leg, and take magnitude
+    dynIm = abs(dynIm((1:64)+4,:,8:57,:));
+    valIm = abs(valIm((1:64)+4,:,:,:));
 
     % Coil compression
     nVirtCoils = 8;
@@ -192,7 +182,7 @@ imshow(plotIm);
 clim([0, Inf]);
 fig1Pos = tightPosition(hAx);
 
-annotation('rectangle', fig1Pos, 'Color', dyColor, 'LineWidth', 4, 'PickableParts', 'none');
+annotation('rectangle', fig1Pos, 'Color', dyColor, 'LineWidth', 4);
 
 y = [zeros(100,1);
     10*sin(x)+10;
@@ -232,8 +222,7 @@ title('Validation data', 'FontSize', 12)
 hAx = axes('Position', axPos{2,2});
 imshow(plotImRef);
 clim([0, Inf]);
-annotation('rectangle', tightPosition(hAx), 'Color', valColor, ...
-    'LineWidth', 4, 'PickableParts', 'none');
+annotation('rectangle', tightPosition(hAx), 'Color', valColor, 'LineWidth', 4);
 fig2Pos = tightPosition(hAx);
 
 annotation('doublearrow', [sum(fig1Pos([1,3])), fig2Pos(1)]+0.015*[1,-1], ...
@@ -265,5 +254,5 @@ axes('Position', combineAxesPositions(axPos(1,:)), 'Visible', 'off');
 ht = title('Dynamic image validation', 'FontSize', 14, 'Visible', 'on');
 ht.Position(2) = 1.2;
 
-exportgraphics(hFig, './figure/figure5.eps', 'ContentType', 'vector', 'Padding', 'figure')
-exportgraphics(hFig, './figure/figure5.png', 'Resolution', 300, 'Padding', 'figure')
+exportgraphics(hFig, './figures/figure5.eps', 'ContentType', 'vector', 'Padding', 'figure')
+exportgraphics(hFig, './figures/figure5.png', 'Resolution', 300, 'Padding', 'figure')
