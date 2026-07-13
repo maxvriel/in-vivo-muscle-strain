@@ -23,39 +23,16 @@ recFiles = {'recon/volunteer6/dynamic1_recon.h5', 'recon/volunteer6/dynamic2_rec
 
 images = cell(size(recFiles));
 displacements = cell(size(recFiles));
-dt = zeros(size(recFiles));
 climsIm = [0,0];
 for iRec = 1:length(recFiles)
-    % Load images
-    im = h5read(recFiles{iRec}, '/recon/images');
-    im = im.real + 1i*im.imag;
-
-    climsIm(2) = max(climsIm(2), max(abs(im(:))));
-
-    % Load velocity field
-    Bx = h5read(recFiles{iRec}, '/recon/velocity/splines_x');
-    By = h5read(recFiles{iRec}, '/recon/velocity/splines_y');
-    Bz = h5read(recFiles{iRec}, '/recon/velocity/splines_z');
-    coeffs = h5read(recFiles{iRec}, '/recon/velocity/coefficients');
-    dt = h5readatt(recFiles{iRec}, '/recon', 'dt');
-    FOV = h5readatt(recFiles{iRec}, '/recon', 'FOV');
-    spacing = FOV ./ size(im, 1:3)';
-
-    nDims = 3;
-    [nx, nBx] = size(Bx);
-    [ny, nBy] = size(By);
-    [nz, nBz] = size(Bz);
-    nt = size(coeffs, 2);
+    % Load reconstruction
+    [im, dt, FOV, vel] = readRecon(recFiles{iRec});
     
-    vel = reshape(coeffs, 1, nBx, nBy, nBz, nDims, nt);
-    vel = pagemtimes(vel, 'none', Bx, 'transpose');
-    vel = reshape(vel, nx, nBy, nBz, nDims, nt);
-    vel = pagemtimes(vel, 'none', By, 'transpose');
-    vel = reshape(vel, nx*ny, nBz, nDims, nt);
-    vel = pagemtimes(vel, 'none', Bz, 'transpose');
-    vel = reshape(vel, nx, ny, nz, nDims, nt);
-
+    % Determine color limits for images
+    climsIm(2) = max(climsIm(2), max(abs(im(:))));
+    
     % Integrate velocity field to displacement field
+    spacing = FOV ./ size(im, 1:3)';
     displ = velocityToDisplacement(vel, spacing, dt, 1);
 
     % Find time frame of maximum deformation

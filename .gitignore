@@ -1,6 +1,9 @@
-# Data files
-*.h5
-*.mrd
+# Data and recon folders
+/data
+/recon
+
+# Elastix runs
+/registration/tmp
 
 # Exported figures
 *.eps

@@ -1,12 +1,13 @@
-function uField = velocityToDisplacement(velField, spacing, dt, nSteps)
+function uField = velocityToDisplacement(velField, spacing, timeStep, nSteps)
 %velocityToDisplacement Convert a velocity field to a displacement field.
 %
 %   Inputs:
 %   velField: Velocity field as a 5D array [x,y,z,v,t]
 %   spacing: Spatial spacing of the velocity field in each spatial 
 %       dimension
-%   dt: Time step
-%   nSteps (optional): Number of steps for Eulerian integration
+%   timeStep: Time step between the velocity field frames in seconds
+%   nSteps (optional): Number of steps for Eulerian integration; more steps
+%       is more accurate but slower
 %
 %   Outputs:
 %   uField: Displacement field as a 5D array [x,y,z,u,t]
@@ -14,10 +15,11 @@ function uField = velocityToDisplacement(velField, spacing, dt, nSteps)
 % Copyright (c) 2026, UMC Utrecht 
 % Max van Riel, m.h.c.vanriel-3@umcutrecht.nl
 
-assert(ndims(velField) <= 5, 'Velocity field has too many dimensions')
-
-if nargin < 4 || isempty(nSteps)
-    nSteps = 1;
+arguments
+    velField (:,:,:,:,:) {mustBeNumeric}
+    spacing (1,3) {mustBePositive, mustBeNonempty}
+    timeStep (1,1) {mustBePositive}
+    nSteps (1,1) {mustBePositive, mustBeInteger} = 1
 end
 
 % Coordinate grids for interpolation
@@ -39,7 +41,7 @@ for iTime = 1:size(velField, 5)
     for iStep = 1:nSteps
         du = vInterp(xt(:,:,:,1), xt(:,:,:,2), xt(:,:,:,3));
         du(isnan(du)) = 0;
-        xt = xt + du*(dt/nSteps);
+        xt = xt + du*(timeStep/nSteps);
     end
     % Store the displacement for the current time step
     uField(:,:,:,:,iTime) = xt - x0;
