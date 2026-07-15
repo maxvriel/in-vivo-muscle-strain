@@ -27,15 +27,12 @@ segmMask = createMask(segmIm, prctile(segmIm(:), 65));
 segmMask = imdilate(segmMask, strel('disk', 3));
 
 %% Load data
-recFiles = {'recon/volunteer1/dynamic1_recon.h5', ...
-    'recon/volunteer1/dynamic2_recon.h5'};
-
-masks = cell(size(recFiles));
-segmLabelsReg = cell(size(recFiles));
-strainTables = cell(size(recFiles));
-for iRec = 1:length(recFiles)
+segmLabelsReg = cell(1,2);
+strainTables = cell(1,2);
+for iDyn = 1:2
     % Load reconstruction
-    [dynIm, dt, FOV, vel] = readRecon(recFiles{iRec});
+    recFile = sprintf('recon/volunteer1/dynamic%d_recon.h5', iDyn);
+    [dynIm, dt, FOV, vel] = readRecon(recFile);
     
     % Integrate velocity field to displacement field
     spacing = FOV ./ size(dynIm, 1:3)';
@@ -53,7 +50,7 @@ for iRec = 1:length(recFiles)
     mask = createMask(imInit, prctile(imInit(:), 65));
 
     % Elastix registration
-    elastixDir = sprintf('./registration/tmp/segmentation/volunteer1/rec%d', iRec);
+    elastixDir = sprintf('./registration/tmp/segmentation/volunteer1/rec%d', iDyn);
     if ~isfolder(elastixDir)
         % Create mask to use during registration
         maskReg = mask;
@@ -81,9 +78,8 @@ for iRec = 1:length(recFiles)
     strainTable = table(strainLabels, labelsInfo.LABEL(labelIdx), ...
         strainInfo(:,1), 'VariableNames', {'Index', 'Label', 'MeanStrain'});
     
-    masks{iRec} = mask;
-    segmLabelsReg{iRec} = labelsReg;
-    strainTables{iRec} = strainTable;
+    segmLabelsReg{iDyn} = labelsReg;
+    strainTables{iDyn} = strainTable;
 end
 
 % Remove outer slices
