@@ -22,7 +22,7 @@ dt = h5readatt(recFile, '/recon', 'dt');
 
 climsIm = [0, max(abs(im(:)))];
 
-% Remove slice oversampling
+% Remove outer slices
 im = im(:, :, 8:57, :);
 
 % Location of the shown slices

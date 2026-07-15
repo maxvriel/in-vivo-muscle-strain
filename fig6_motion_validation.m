@@ -35,7 +35,7 @@ for iSubj = 1:length(subjects)
     % Warp each frame back to the first frame using the displacement fields
     warpedIm = warpImage(dynIm, spacing, displ, spacing, 'spline', 0);
 
-    % Remove slice oversampling, select right leg, and take magnitude
+    % Remove outer slices, select right leg, and take magnitude
     dynIm = abs(dynIm((1:64)+4,:,8:57,:));
     displ = displ((1:64)+4,:,8:57,:,:);
     warpedIm = abs(warpedIm((1:64)+4,:,8:57,:));

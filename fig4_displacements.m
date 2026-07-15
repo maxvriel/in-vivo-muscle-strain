@@ -41,7 +41,7 @@ for iRec = 1:length(recFiles)
     % Create mask for displacement field
     mask = createMask(abs(im(:,:,:,1)), prctile(abs(im(:)), 65));
 
-    % Remove slice oversampling
+    % Remove outer slices
     images{iRec} = abs(im(:,:,8:57,tMax));
     displacements{iRec} = displ(:,:,8:57,:,tMax) .* mask(:,:,8:57);
 end

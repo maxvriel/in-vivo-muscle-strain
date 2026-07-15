@@ -43,7 +43,7 @@ for iSubj = 1:length(subjects)
     % Reconstruct validation images
     valIm = imageRecon(valData, valHeader, valCsm);
 
-    % Remove slice oversampling, select right leg, and take magnitude
+    % Remove outer slices, select right leg, and take magnitude
     dynIm = abs(dynIm((1:64)+4,:,8:57,:));
     valIm = abs(valIm((1:64)+4,:,:,:));
 

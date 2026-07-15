@@ -1,4 +1,4 @@
-function [imWarped, deformField] = elastix(imMoving, spacingMoving, imFixed, spacingFixed, outDir, paramFiles, maskFixed)
+function [imWarped, deformField] = elastix(imMoving, spacingMoving, imFixed, spacingFixed, outDir, paramFiles, maskFixed, maskMoving)
 %elastix Perform image registration with elastix
 %
 %   Inputs:
@@ -10,6 +10,7 @@ function [imWarped, deformField] = elastix(imMoving, spacingMoving, imFixed, spa
 %   paramFiles: Path(s) to elastix parameter file; specify multiple files
 %       to run multiple registrations in succession
 %   maskFixed (optional): Fixed image mask
+%   maskMoving (optional): Moving image mask
 %   
 % Copyright (c) 2026, UMC Utrecht
 % Max van Riel, m.h.c.vanriel-3@umcutrecht.nl
@@ -22,6 +23,7 @@ arguments
     outDir {mustBeTextScalar}
     paramFiles (1,:) {mustBeFile}
     maskFixed {mustBeNumericOrLogical} = []
+    maskMoving {mustBeNumericOrLogical} = []
 end
 
 assert(isenv('ELASTIXPATH'), 'Environment variable ELASTIXPATH must be set')
@@ -45,11 +47,15 @@ movingFileName = fullfile(outDir, 'moving.mhd');
 writeMhd(movingFileName, imMoving, spacingMoving);
 cmd = sprintf('%s -f %s -m %s', cmd, fixedFileName, movingFileName);
 if ~isempty(maskFixed)
-    maskFileName = fullfile(outDir, 'mask.mhd');
+    maskFileName = fullfile(outDir, 'fMask.mhd');
     writeMhd(maskFileName, maskFixed, spacingFixed);
-    cmd = sprintf('%s -m %s', cmd, maskFileName);
+    cmd = sprintf('%s -fMask %s', cmd, maskFileName);
 end
-
+if ~isempty(maskMoving)
+    maskFileName = fullfile(outDir, 'mMask.mhd');
+    writeMhd(maskFileName, maskMoving, spacingMoving);
+    cmd = sprintf('%s -mMask %s', cmd, maskFileName);
+end
 % Run elastix
 status = system(cmd);
 if status ~= 0

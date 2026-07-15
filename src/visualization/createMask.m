@@ -11,7 +11,10 @@ function mask = createMask(im, threshold)
 % Copyright (c) 2026, UMC Utrecht
 % Max van Riel, m.h.c.vanriel-3@umcutrecht.nl
 
-assert(isreal(im), 'Input image must be real-valued, use magnitude image')
+arguments
+    im {mustBeNumeric, mustBeReal}
+    threshold (1,1) {mustBeNumeric} = graythresh(im)
+end
 
 % Apply threshold
 mask = im > threshold;
