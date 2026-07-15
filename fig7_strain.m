@@ -31,7 +31,6 @@ segmMask = imdilate(segmMask, strel('disk', 3));
 %% Load data
 recFiles = {'recon/volunteer1/dynamic1_recon.h5', 'recon/volunteer1/dynamic2_recon.h5'};
 
-climsIm = [0,0];
 masks = cell(size(recFiles));
 segmLabelsReg = cell(size(recFiles));
 strains = cell(size(recFiles));
