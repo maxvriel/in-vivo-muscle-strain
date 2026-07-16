@@ -4,7 +4,7 @@ function writeMhd(fileName, data, spacing, isVectorField, transfMatrix)
 %   Inputs:
 %   fileName: Path to the MetaImage header file (.mhd)
 %   data: Image or vector field data
-%   spacing: Voxel spacing in each spatial dimension in m
+%   spacing: Voxel spacing in each spatial dimension in mm
 %   isVectorField (optional): Boolean indicating if the data is a vector
 %       field, defaults to false
 %   transfMatrix (optional): Transformation matrix between the image and
@@ -63,9 +63,9 @@ info.BinaryData = true;
 info.BinaryDataByteOrderMSB = false;
 info.CompressedData = false;
 info.TransformMatrix = transfMatrix(:).';
-info.Offset = offset * 1e3;
+info.Offset = offset;
 info.CenterOfRotation = zeros(1, nDims);
-info.ElementSpacing = spacing(1:nDims) * 1e3;
+info.ElementSpacing = spacing(1:nDims);
 info.DimSize = size(data, 1:nDims);
 if isVectorField
     info.ElementNumberOfChannels = size(data, nDims+1);
@@ -109,10 +109,9 @@ end
 % Write header file
 writelines(lines, fileName);
 
-% Permute data and convert m to mm
+% Permute data
 if isVectorField
     data = permute(data, [nDims+1, 1:nDims]);
-    data = data * 1e3;
 end
 
 % Write raw data file

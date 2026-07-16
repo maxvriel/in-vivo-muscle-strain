@@ -63,13 +63,12 @@ end
 data = fread(fid, sprintf('*%s', precision));
 fclose(fid);
 
-% Reshape data and convert mm to m
+% Reshape data
 if info.ElementNumberOfChannels == 1
     data = reshape(data, info.DimSize);
 else
     data = reshape(data, [info.ElementNumberOfChannels, info.DimSize]);
     data = permute(data, [2:info.NDims+1, 1]);
-    data = data * 1e-3;
 end
 
 end

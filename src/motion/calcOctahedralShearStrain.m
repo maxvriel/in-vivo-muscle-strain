@@ -3,7 +3,7 @@ function oss = calcOctahedralShearStrain(displ, spacing)
 %
 %   Inputs:
 %   displ: Displacement field as a 5D array [x,y,z,u,t]
-%   spacing: Voxel spacing in each dimension in meters
+%   spacing: Voxel spacing in each dimension
 %
 %   Outputs:
 %   oss: Octahedral shear strain as a 3D array [x,y,z,t]

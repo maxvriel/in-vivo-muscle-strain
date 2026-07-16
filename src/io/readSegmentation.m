@@ -7,7 +7,7 @@ function [segmIm, segmLabels, segmSpacing, labelsInfo, labelsColors] = readSegme
 %   Outputs:
 %   segmIm: Out-of-phase image used for segmentation
 %   segmLabels: Segmentation labels as integer indices
-%   segmSpacing: Spacing of the segmentation image in meters
+%   segmSpacing: Spacing of the segmentation image in mm
 %   labelsInfo: Table with information about the segmentation labels
 %   labelsColors: Colors for each segmentation label
 %
@@ -20,7 +20,7 @@ end
 
 % Read out-of-phase image and segmentation labels
 segmImInfo = niftiinfo(fullfile(folderName, 'outphase.nii.gz'));
-segmSpacing = segmImInfo.PixelDimensions * 1e-3;
+segmSpacing = segmImInfo.PixelDimensions;
 segmIm = niftiread(segmImInfo);
 segmLabels = niftiread(fullfile(folderName, 'segmentation.nii.gz'));
 

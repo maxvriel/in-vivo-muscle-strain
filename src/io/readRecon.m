@@ -7,7 +7,7 @@ function [images, timeStep, fieldOfView, velocity] = readRecon(fileName)
 %   Outputs:
 %   images: Reconstructed complex-valued images as a 4D array [x, y, z, t]
 %   timeStep: Time step between image frames in seconds
-%   fieldOfView: Field of view in meters
+%   fieldOfView: Field of view in mm
 %   velocity: Velocity fields as a 5D array [x, y, z, v, t]
 %
 % Copyright (c) 2026, UMC Utrecht
