@@ -1,6 +1,6 @@
 function images = imageRecon(data, header, coilMaps, dynIdx, userIdx)
 %imageRecon Reconstruct k-space data to images by performing a
-%coil-weighted zero-filled reconstruction
+%coil-weighted zero-filled reconstruction.
 %
 % Inputs:
 %   data: ISMRMRD data object

@@ -1,6 +1,6 @@
 function [deformField, imWarped] = transformix(transfParamFile)
 %transformix Retrieve deformation field from elastix registration, and
-%optionally warp the moving image
+%optionally warp the moving image.
 %
 %   Inputs:
 %   transfParamFile: Path to transformation parameters file

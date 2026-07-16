@@ -1,6 +1,6 @@
 function axPos = createAxesPositions(widths, heights)
 %createAxesPositions Calculate the Position property for Axes objects in a
-%grid given a vector of sizes of the Axes and the gaps in between
+%grid given a vector of sizes of the Axes and the gaps in between.
 %
 %   Inputs:
 %   widths: Vector of relative widths: [left, plot, gap, plot, ..., right]

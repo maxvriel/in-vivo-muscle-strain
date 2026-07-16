@@ -1,5 +1,5 @@
 function imWarped = warpImage(im, imSpacing, displ, displSpacing, interpMethod, extrapVal)
-%warpImage Warp an image using a displacement field
+%warpImage Warp an image using a displacement field.
 %
 %   Inputs:
 %   im: Input image as a 4D array [x,y,z,t]

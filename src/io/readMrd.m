@@ -1,6 +1,6 @@
 function [data, header, coilMaps] = readMrd(dataFile, decorrelate)
 %readMrd Load ISMRMRD k-space data and coil sensitivity maps from an
-%ISMRMRD data file
+%ISMRMRD data file.
 %
 % Inputs:
 %   dataFile: Path to the ISMRMRD data file

@@ -1,5 +1,5 @@
 function oss = calcOctahedralShearStrain(displ, spacing)
-%calcOss Calculate octahedral shear strain from a displacement field
+%calcOss Calculate octahedral shear strain from a displacement field.
 %
 %   Inputs:
 %   displ: Displacement field as a 5D array [x,y,z,u,t]

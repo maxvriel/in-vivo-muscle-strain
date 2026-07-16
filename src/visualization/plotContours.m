@@ -1,7 +1,7 @@
 function plotContours(labels, colors, lineWidth)
 %plotContours Plots the contours of all unique labels (except 0) in the
 %segmentation labels image in the current Axes with the given color
-%table and line width
+%table and line width.
 %
 %   Inputs:
 %   labels: Segmentation labels as integer indices

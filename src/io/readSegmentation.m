@@ -1,5 +1,5 @@
 function [segmIm, segmLabels, segmSpacing, labelsInfo, labelsColors] = readSegmentation(folderName)
-%readSegmentation Load segmentation data
+%readSegmentation Load segmentation data.
 %
 %   Inputs:
 %   folderName: Path to the folder containing segmentation files

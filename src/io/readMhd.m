@@ -1,5 +1,5 @@
 function data = readMhd(fileName)
-% readMhd Read a MetaImage (.mhd) file
+% readMhd Read a MetaImage (.mhd) file.
 %
 %   Inputs:
 %   fileName: Path to the MetaImage header file (.mhd)

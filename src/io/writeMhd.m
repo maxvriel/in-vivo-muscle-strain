@@ -1,5 +1,5 @@
 function writeMhd(fileName, data, spacing, isVectorField, transfMatrix)
-%writeMhd Write data to a MetaImage (.mhd) file
+%writeMhd Write data to a MetaImage (.mhd) file.
 %
 %   Inputs:
 %   fileName: Path to the MetaImage header file (.mhd)

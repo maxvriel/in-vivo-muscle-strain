@@ -1,6 +1,6 @@
 function kspace = sortData(data, header, densityComp, dynIdx, userIdx)
 %sortData Sort k-space data in a 4D array and averages the data that has
-% been acquired multiple times
+% been acquired multiple times.
 %
 % Inputs:
 %   data: ISMRMRD data object

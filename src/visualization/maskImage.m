@@ -1,5 +1,5 @@
 function im = maskImage(im, mask, clims, cmap, bgColor)
-%maskImage Masks out the background of an image
+%maskImage Masks out the background of an image.
 %
 %   Inputs:
 %   im: Input image

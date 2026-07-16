@@ -1,5 +1,5 @@
 function [imWarped, deformField] = elastix(imMoving, spacingMoving, imFixed, spacingFixed, outDir, paramFiles, maskFixed, maskMoving)
-%elastix Perform image registration with elastix
+%elastix Perform image registration with elastix.
 %
 %   Inputs:
 %   imMoving: Moving image
