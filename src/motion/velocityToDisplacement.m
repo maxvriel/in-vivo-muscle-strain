@@ -5,7 +5,7 @@ function displ = velocityToDisplacement(velocity, spacing, timeStep, nSteps)
 %   velocity: Velocity field as a 5D array [x,y,z,v,t]
 %   spacing: Spatial spacing of the velocity field in each spatial 
 %       dimension
-%   timeStep: Time step between the velocity field frames in seconds
+%   timeStep: Time step between the velocity field frames
 %   nSteps (optional): Number of steps for Eulerian integration; more steps
 %       is more accurate but slower
 %

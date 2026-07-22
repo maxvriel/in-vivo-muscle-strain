@@ -1,4 +1,4 @@
-function kspace = sortData(data, header, densityComp, dynIdx, userIdx)
+function [kspace, samplCount] = sortData(data, header, densityComp, dynIdx, userIdx)
 %sortData Sort k-space data in a 4D array and averages the data that has
 % been acquired multiple times.
 %
@@ -12,6 +12,8 @@ function kspace = sortData(data, header, densityComp, dynIdx, userIdx)
 %
 % Outputs:
 %   kspace: k-space array [kx, ky, kz, coils, dynamics]
+%   samplCount: Number of times each k-space line has been sampled 
+%       [1, ky, kz, 1, dynamics]
 %
 % Copyright (c) 2026, UMC Utrecht
 % Max van Riel, m.h.c.vanriel-3@umcutrecht.nl
@@ -39,11 +41,11 @@ nCh = header.acquisitionSystemInformation.receiverChannels;
 % Allocate k-space array
 kspace = zeros(nKx, nKy, nKz, nCh, nDyn, 'like', data.data{1});
 
-for iDyn = 1:nDyn
-    % Keep track of the number of times the line has been sampled
-    % For CASPR data, this is not a constant over k-space
-    count = zeros(1, nKy, nKz);
+% Keep track of the number of times the line has been sampled
+% For CASPR data, this is not a constant over k-space
+samplCount = zeros(1, nKy, nKz, 1, nDyn);
 
+for iDyn = 1:nDyn
     % Select k-space readouts
     % Only select the first slice, contrast, etc. in case there are multiple
     acqIdx = find(~data.head.flagIsSet('ACQ_IS_NOISE_MEASUREMENT') & ...
@@ -60,13 +62,13 @@ for iDyn = 1:nDyn
         kz = floor(nKz/2) - kzLim.center + data.head.idx.kspace_encode_step_2(acqIdx(iAcq)) + 1;
         kspace(kx,ky,kz,:,iDyn) = kspace(kx,ky,kz,:,iDyn) + ...
             reshape(data.data{acqIdx(iAcq)}, data.head.number_of_samples(acqIdx(iAcq)), 1, 1, nCh);
-        count(1,ky,kz) = count(1,ky,kz) + 1;
+        samplCount(1,ky,kz,1,iDyn) = samplCount(1,ky,kz,1,iDyn) + 1;
     end
+end
 
-    % Sampling density compensation, preventing division by zero
-    if densityComp
-        kspace(:,:,:,:,iDyn) = kspace(:,:,:,:,iDyn) ./ max(count, 1);
-    end
+% Sampling density compensation, preventing division by zero
+if densityComp
+    kspace = kspace ./ max(samplCount, 1);
 end
 
 end

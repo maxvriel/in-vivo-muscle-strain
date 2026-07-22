@@ -21,8 +21,8 @@ end
 images = h5read(fileName, '/recon/images');
 images = images.real + 1i*images.imag;
 
-timeStep = h5readatt(fileName, '/recon', 'dt');
-fieldOfView = h5readatt(fileName, '/recon', 'FOV');
+timeStep = h5readatt(fileName, '/recon', 'time_step');
+fieldOfView = h5readatt(fileName, '/recon', 'field_of_view');
 
 if nargout >= 4
     % Load velocity field
