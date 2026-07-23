@@ -29,11 +29,7 @@ Download the dataset from [Zenodo](https://doi.org/10.5281/zenodo.17312307) and 
 
 ## Usage
 
-To run the joint reconstruction, execute:
-
-```matlab
-runRecon
-```
+To run the joint reconstruction, run the `runRecon.m` script.
 
 Reconstruction may take several hours to complete.
 
