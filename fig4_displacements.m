@@ -165,6 +165,3 @@ ylabel('Cuff position 2', 'Visible', 'on')
 annotation('line', 0.04*[1,1], [sum(axPos{3,1}([2,4])), axPos{4,1}(2)])
 annotation('line', [0.04,0.05], axPos{4,1}(2)*[1,1])
 annotation('line', [0.04,0.05], sum(axPos{3,1}([2,4]))*[1,1])
-
-exportgraphics(hFig, './figures/figure4.eps', 'ContentType', 'vector', 'Padding', 'figure')
-exportgraphics(hFig, './figures/figure4.png', 'Resolution', 300, 'Padding', 'figure')

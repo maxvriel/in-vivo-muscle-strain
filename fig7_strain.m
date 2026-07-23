@@ -187,6 +187,3 @@ hCb.Position(2) = axPos{3,3}(2);
 hCb.Position(3) = 0.1*widths(end)/sum(widths);
 hCb.Position(4) = axPos{3,3}(4)+axPos{2,3}(4)+heights(5)/sum(heights);
 ylabel(hCb, 'OSS (-)', 'FontSize', 14, 'Rotation', -90)
-
-exportgraphics(hFig, './figures/figure7.eps', 'ContentType', 'vector','Padding', 'figure')
-exportgraphics(hFig, './figures/figure7.png', 'Resolution', 300, 'Padding', 'figure')

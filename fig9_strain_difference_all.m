@@ -145,6 +145,3 @@ ht.Position(2) = ht.Position(2) + 0.16;
 annotation('line', [0, 1] + ([widths(1), -widths(end)] + 0*[-0.5,0.5]*widths(1))/sum(widths), ...
     axPos{2,1}(2) - 0.4*heights(5)/sum(heights) * [1,1], ...
     'LineWidth', 1.5)
-
-exportgraphics(hFig, './figures/figure9.eps', 'ContentType', 'vector', 'Padding', 'figure')
-exportgraphics(hFig, './figures/figure9.png', 'Resolution', 300, 'Padding', 'figure')

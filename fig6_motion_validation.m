@@ -158,6 +158,3 @@ legend([hl; hlBlank; hlVal; hlRef], ["Volunteer " + (1:length(subjects)), "", "V
 axes('Position', combineAxesPositions(axPos(1,:)), 'Visible', 'off');
 ht = title('Motion field validation', 'FontSize', 14, 'Visible', 'on');
 ht.Position(2) = 1.2;
-
-exportgraphics(hFig, './figures/figure6.eps', 'ContentType', 'vector', 'Padding', 'figure')
-exportgraphics(hFig, './figures/figure6.png', 'Padding', 'figure', 'Resolution', 600)
