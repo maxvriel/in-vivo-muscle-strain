@@ -8,11 +8,13 @@ University Medical Center Utrecht, The Netherlands
 
 ## Requirements
 
-- MATLAB 2023a with the Image Processing Toolbox
+- MATLAB with the Image Processing Toolbox (tested with Matlab 2023a)
 - [ISMRMRD](https://github.com/ismrmrd/ismrmrd/)
 - [elastix](https://elastix.dev/)
 
 Make sure the paths in `setup.m` are configured correctly.
+
+Note that there is a bug in the hdf5 library of Matlab 2025a and newer that can cause memory issues when loading multiple ISMRMRD files.
 
 ## Data
 
