@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21506263.svg)](https://doi.org/10.5281/zenodo.21506263)
+
 # Time-resolved 3D imaging and strain analysis for in vivo muscle dynamics
 
 This repository contains the MATLAB code used to generate the figures in the paper:
