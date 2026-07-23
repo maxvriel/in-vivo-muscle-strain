@@ -3,7 +3,7 @@
 /recon
 
 # Elastix runs
-/registration/tmp
+/registration/tmp*
 
 # Exported figures
 *.eps
