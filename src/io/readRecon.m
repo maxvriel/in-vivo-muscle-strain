@@ -35,15 +35,15 @@ if nargout >= 4
     [nx, nBx] = size(Bx);
     [ny, nBy] = size(By);
     [nz, nBz] = size(Bz);
-    nt = size(coeffs, 2);
+    nTime = size(images, 4);
 
-    velocity = reshape(coeffs, 1, nBx, nBy, nBz, nDims, nt);
+    velocity = reshape(coeffs, 1, nBx, nBy, nBz, nDims, nTime-1);
     velocity = pagemtimes(velocity, 'none', Bx, 'transpose');
-    velocity = reshape(velocity, nx, nBy, nBz, nDims, nt);
+    velocity = reshape(velocity, nx, nBy, nBz, nDims, nTime-1);
     velocity = pagemtimes(velocity, 'none', By, 'transpose');
-    velocity = reshape(velocity, nx*ny, nBz, nDims, nt);
+    velocity = reshape(velocity, nx*ny, nBz, nDims, nTime-1);
     velocity = pagemtimes(velocity, 'none', Bz, 'transpose');
-    velocity = reshape(velocity, nx, ny, nz, nDims, nt);
+    velocity = reshape(velocity, nx, ny, nz, nDims, nTime-1);
 end
 
 end
