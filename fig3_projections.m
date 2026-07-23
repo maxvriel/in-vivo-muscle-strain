@@ -10,7 +10,8 @@
 clearvars
 close all
 
-addpath(genpath(pwd))
+% Set paths
+setup
 
 %% Load data
 recFile = 'recon/volunteer2/dynamic1_recon.h5';

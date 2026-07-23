@@ -15,7 +15,8 @@
 clearvars
 close all
 
-addpath(genpath(pwd))
+% Set paths
+setup
 
 %% Load data
 recFiles = {'recon/volunteer6/dynamic1_recon.h5', 'recon/volunteer6/dynamic2_recon.h5', ...
