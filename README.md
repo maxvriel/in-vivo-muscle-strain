@@ -1,17 +1,50 @@
 # Time-resolved 3D imaging and strain analysis for in vivo muscle dynamics
-This repository includes the Matlab code used to produce the figures included in the paper titled "Time-resolved 3D imaging and strain analysis for in vivo muscle dynamics" by Max H.C. van Riel, David G.J. Heesterbeek, Martijn Froeling, Tristan van Leeuwen, Cornelis A.T. van den Berg, and Alessandro Sbrizzi from the University Medical Center Utrecht, The Netherlands.
+
+This repository contains the MATLAB code used to generate the figures in the paper:
+
+**"Time-resolved 3D imaging and strain analysis for in vivo muscle dynamics"**  
+by Max H.C. van Riel, David G.J. Heesterbeek, Martijn Froeling, Tristan van Leeuwen, Cornelis A.T. van den Berg, and Alessandro Sbrizzi  
+University Medical Center Utrecht, The Netherlands
+
+## Requirements
+
+- MATLAB 2023a with the Image Processing Toolbox
+- [ISMRMRD](https://github.com/ismrmrd/ismrmrd/)
+- [elastix](https://elastix.dev/)
+
+Make sure the paths in `setup.m` are configured correctly.
+
+## Data
+
+Download the dataset from [Zenodo](https://doi.org/10.5281/zenodo.17312307) and place it in a folder named `data`.
 
 ## Installation
-The Matlab code has been tested using Matlab 2023a with the Image Processing Toolbox.
-To run the scripts, install the ISMRMRD code (https://github.com/ismrmrd/ismrmrd/) and elastix (https://elastix.dev/).
-Make sure the paths in setup.m are set correctly.
-Finally, download the dataset from https://doi.org/10.5281/zenodo.17312307 and place the dataset in a folder called 'data'.
+
+1. Clone this repository.
+2. Install the dependencies listed above.
+3. Update the paths in `setup.m`.
+4. Place the downloaded dataset in `data/`.
 
 ## Usage
-To run the joint reconstruction, run the script runRecon.m.
-This will take several hours to complete.
-After all datasets have been reconstructed, the figures 3-9 of the manuscript can be reproduced using the corresponding Matlab scripts.
+
+To run the joint reconstruction, execute:
+
+```matlab
+runRecon
+```
+
+Reconstruction may take several hours to complete.
+
+After reconstruction, Figures 3–9 in the manuscript can be reproduced using the corresponding scripts.
+
+## Registration outputs
+
+For Figures 5–9, elastix registration outputs are stored in `registration/tmp`.
+
+If the reconstructions or segmentation masks change, delete this folder before rerunning the figure generation scripts.
 
 ## Acknowledgements
-We make use of the scientific color maps lajolla and vik:
-Crameri, F. (2018a), Scientific colour maps. Zenodo. doi.org/10.5281/zenodo.1243862.
+
+This project uses the scientific colour maps **lajolla** and **vik**:
+
+Crameri, F. (2018a). *Scientific colour maps*. Zenodo. https://doi.org/10.5281/zenodo.1243862
