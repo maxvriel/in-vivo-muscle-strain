@@ -42,7 +42,7 @@ for iTime = 1:size(displ, 5)
     Ep = 0.5*log(mu);
 
     % Calculate octahedral shear strain
-    s = 1/3*sqrt((Ep(1,:)-Ep(2,:)).^2 + (Ep(2,:)-Ep(3,:)).^2 + (Ep(1,:)-Ep(3,:)).^2);
+    s = 2/3*sqrt((Ep(1,:)-Ep(2,:)).^2 + (Ep(2,:)-Ep(3,:)).^2 + (Ep(1,:)-Ep(3,:)).^2);
     oss(:,:,:,iTime) = reshape(s, size(displ, 1:3));
 end
 
