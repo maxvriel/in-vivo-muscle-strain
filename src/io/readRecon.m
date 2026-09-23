@@ -25,12 +25,13 @@ timeStep = h5readatt(fileName, '/recon', 'time_step');
 fieldOfView = h5readatt(fileName, '/recon', 'field_of_view');
 
 if nargout >= 4
-    % Load velocity field
+    % Load velocity coefficients
     Bx = h5read(fileName, '/recon/velocity/splines_x');
     By = h5read(fileName, '/recon/velocity/splines_y');
     Bz = h5read(fileName, '/recon/velocity/splines_z');
     coeffs = h5read(fileName, '/recon/velocity/coefficients');
 
+    % Apply B-spline basis functions
     nDims = 3;
     [nx, nBx] = size(Bx);
     [ny, nBy] = size(By);
@@ -44,6 +45,9 @@ if nargout >= 4
     velocity = reshape(velocity, nx*ny, nBz, nDims, nTime-1);
     velocity = pagemtimes(velocity, 'none', Bz, 'transpose');
     velocity = reshape(velocity, nx, ny, nz, nDims, nTime-1);
+
+    % Add zero velocity field for the first time frame
+    velocity = cat(5, zeros(nx, ny, nz, nDims, 1, 'like', velocity), velocity);
 end
 
 end
