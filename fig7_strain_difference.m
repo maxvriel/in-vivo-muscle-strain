@@ -87,11 +87,11 @@ segmIm = segmIm(:,:,11:40);
 segmLabels = segmLabels(:,:,11:40);
 
 %% Show figure
-clims = [0, 0.3];
-climsDiff = [-0.25, 0.25];
+clims = [0, 0.6];
+climsDiff = [-0.5, 0.5];
 
-widths = [0.1, 0.5, 0.1, 0.5, 0.1, 0.5, 0.1, 0.5, 0.1];
-heights = [0.1, 0.5, 0.2];
+widths = [0.15, 0.5, 0.15, 0.5, 0.1, 0.5, 0.1, 0.5, 0.1];
+heights = [0.1, 0.5, 0.3];
 axPos = createAxesPositions(widths, heights);
 
 hFig = figure('Name', 'Strain Difference 1', 'Color', 'white', 'DefaultAxesFontSize', 14);
@@ -100,9 +100,9 @@ hFig.Position(1:3) = [1, 1, 1200];
 hFig.Position(4) = hFig.Position(3)*sum(heights)/sum(widths);
 
 hAx = axes('Position', axPos{1,1});
-imshow(abs(segmIm(1:end/2,:,10)).')
+imshow(abs(segmIm(1:end/2,:,16)).')
 hold on
-plotContours(segmLabels(1:end/2,:,10).', labelsColors, 1.5)
+plotContours(segmLabels(1:end/2,:,16).', labelsColors, 1.5)
 daspect(hAx, [1./segmSpacing([1,2]), 1])
 title('Segmentation', 'FontSize', 16)
 hl = annotation(hFig, 'line', 'Color', 'w');
@@ -112,6 +112,20 @@ set(hl, 'Parent', hAx, 'X', size(segmIm, 1)/2-20*[1,1], 'Y', size(segmIm, 2)-20+
 text(size(segmIm, 1)/2-20+[0,0,-15,15], size(segmIm, 2)-20+[-15,15,0,0], ...
     {'A','P','R','L'}, 'FontSize', 10, 'Color', 'w', 'HorizontalAlignment', 'center')
 
+% Show muscle names
+legendIdx = [32,34,36,38,40,44,48,56,58,60,62,64,104].';
+hP = fill(NaN(3,length(legendIdx)), NaN(3,length(legendIdx)), 0, 'EdgeColor', 'none');
+set(hP, {'FaceColor'}, num2cell(labelsColors(legendIdx+1,:), 2))
+[~, labelIdx] = ismember(legendIdx, labelsInfo.IDX);
+idxLabels = labelsInfo.LABEL(labelIdx);
+idxNames = regexpi(idxLabels, '\d+ (.*) (?:Left|Right)?', 'tokens', 'once');
+idxNames = cat(1, idxNames{:});
+idxNames = replace(idxNames, 'Satorius', 'Sartorius');
+hLeg = legend(hP, idxNames, 'FontSize', 10, 'NumColumns', 2);
+hLeg.Position(1) = axPos{1,1}(1) + 0.5*axPos{1,1}(3) - 0.5*hLeg.Position(3);
+hLeg.Position(2) = axPos{1,1}(2) - 0.05 - hLeg.Position(4);
+
+% Calculate mean strain per muscle
 [~, labelIdx1] = ismember(segmLabelsReg{1}, strainTables{1}.Index);
 [~, labelIdx2] = ismember(segmLabelsReg{1}, strainTables{2}.Index);
 labelIdx1 = labelIdx1 .* (segmLabelsReg{1} ~= 0);
@@ -135,7 +149,7 @@ title('Isometric contractions', 'FontSize', 16)
 clim(hAx, clims)
 colormap(hAx, lajolla)
 cbPos = combineAxesPositions(axPos(1,2:3));
-cbPos(2) = cbPos(2) - 0.4*heights(end)/sum(heights);
+cbPos(2) = cbPos(2) - 0.1;
 cbPos(4) = 0.05;
 cb = colorbar(hAx, 'Location', 'southoutside', 'Position', cbPos, 'FontSize', 12);
 yl = ylabel(cb, 'OSS (-)', 'FontSize', 12);
@@ -147,7 +161,7 @@ title('Difference', 'FontSize', 16)
 clim(hAx, climsDiff)
 colormap(hAx, vik)
 cbPos = axPos{1,4};
-cbPos(2) = cbPos(2) - 0.4*heights(end)/sum(heights);
+cbPos(2) = cbPos(2) - 0.1;
 cbPos(4) = 0.05;
 cb = colorbar(hAx, 'Location', 'southoutside', 'Position', cbPos, 'FontSize', 12);
 yl = ylabel(cb, '\DeltaOSS (-)', 'FontSize', 12);
