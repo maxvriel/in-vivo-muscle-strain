@@ -20,8 +20,9 @@ load('colormaps/vik.mat')
 
 %% Load data
 subjects = [1,2,4:9];
-segmLabelsReg = cell(4,length(subjects));
-strainTables = cell(4,length(subjects));
+segmLabelsReg = cell(4, length(subjects));
+strainTables = cell(4, length(subjects));
+displMax = zeros(4, length(subjects));
 for iSubj = 1:length(subjects)
     % Load segmentation
     segmFolder = sprintf('data/volunteer%d/', subjects(iSubj));
@@ -31,9 +32,9 @@ for iSubj = 1:length(subjects)
     segmMask = createMask(segmIm, prctile(segmIm(:), 65));
     segmMask = imdilate(segmMask, strel('disk', 3));
 
-    for iDyn1 = 1:4
+    for iDyn = 1:4
         % Load reconstruction
-        recFile = sprintf('recon/volunteer%d/dynamic%d_recon.h5', subjects(iSubj), iDyn1);
+        recFile = sprintf('recon/volunteer%d/dynamic%d_recon.h5', subjects(iSubj), iDyn);
         [dynIm, dt, FOV, vel] = readRecon(recFile);
         
         % Integrate velocity field to displacement field
@@ -52,7 +53,7 @@ for iSubj = 1:length(subjects)
         mask = createMask(imInit, prctile(imInit(:), 65));
 
         % Elastix registration
-        elastixDir = sprintf('./registration/tmp/segmentation/volunteer%d/dynamicscan%d', subjects(iSubj), iDyn1);
+        elastixDir = sprintf('./registration/tmp/segmentation/volunteer%d/dynamicscan%d', subjects(iSubj), iDyn);
         if ~isfolder(elastixDir)
             % Create mask to use during registration
             maskReg = mask;
@@ -70,9 +71,18 @@ for iSubj = 1:length(subjects)
         labelsReg = warpImage(segmLabels, segmSpacing, displReg, spacing, 'nearest', 0);
 
         % Remove outer slices and select right leg
-        labelsReg = labelsReg((1:64)+4,:,8:57);
-        mask = mask((1:64)+4,:,8:57);
-        oss = oss((1:64)+4,:,8:57);
+        xIdx = (1:64)+4;
+        labelsReg = labelsReg(xIdx,:,8:57);
+        mask = mask(xIdx,:,8:57);
+        displ = displ(xIdx,:,8:57,:,:);
+        oss = oss(xIdx,:,8:57);
+
+        % Calculate maximum displacement magnitude
+        uMax = vecnorm(displ, 2, 4);
+        uMax = reshape(uMax, prod(size(uMax, 1:3)), size(uMax, 5));
+        uMax = uMax(mask(:), :);
+        uMax = max(uMax(:));
+        displMax(iDyn,iSubj) = uMax;
 
         % Calculate mean strain values for each segmented muscle
         [strainInfo, strainLabels] = groupsummary(oss(:), labelsReg(:), 'mean');
@@ -80,13 +90,13 @@ for iSubj = 1:length(subjects)
         strainTable = table(strainLabels, labelsInfo.LABEL(labelIdx), ...
             strainInfo(:,1), 'VariableNames', {'Index', 'Label', 'MeanStrain'});
         
-        segmLabelsReg{iDyn1,iSubj} = labelsReg;
-        strainTables{iDyn1,iSubj} = strainTable;
+        segmLabelsReg{iDyn,iSubj} = labelsReg;
+        strainTables{iDyn,iSubj} = strainTable;
     end
 end
 
 %% Show figure
-clims = [-0.25, 0.25];
+clims = [-0.5, 0.5];
 cmap = vik;
 
 widths = [0.15, 0.5, 0.1, 0.5, 0.1, 0.5, 0.1, 0.5, 0.4];
