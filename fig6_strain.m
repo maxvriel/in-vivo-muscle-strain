@@ -101,20 +101,6 @@ hFig.Position(4) = hFig.Position(3)*sum(heights)/sum(widths);
 axes('Position', combineAxesPositions(axPos(1,:)), 'Visible', 'off')
 title('Segmentation', 'FontSize', 16, 'Visible', 'on')
 
-% Set custom colors (created using www.colorbrewer2.org)
-labelsColors = setColor(labelsInfo, labelsColors, 'Biceps femoris long', [0,109,44]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Biceps femoris short', [49,163,84]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Semimembranosus', [116,196,118]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Semitendinosus', [186,228,179]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Vastus lateralis', [165,15,21]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Vastus intermedius', [222,45,38]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Vastus medialis', [251,106,74]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Rectus femoris', [252,174,145]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Satorius', [254,229,217]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Adductor magnus', [49,130,189]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Adductor longus', [158,202,225]/255);
-labelsColors = setColor(labelsInfo, labelsColors, 'Gracilis', [222,235,247]/255);
-
 % Transverse view
 hAx = axes('Position', axPos{1,1});
 imshow(segmIm(:,:,16).')
@@ -214,10 +200,3 @@ hCb.Position(2) = axPos{3,3}(2);
 hCb.Position(3) = 0.1*widths(end)/sum(widths);
 hCb.Position(4) = axPos{3,3}(4)+axPos{2,3}(4)+heights(5)/sum(heights);
 ylabel(hCb, 'OSS (-)', 'FontSize', 14, 'Rotation', -90)
-
-%% Local functions
-function labelsColors = setColor(labelsInfo, labelsColors, str, c)
-% Replace the color of all labels that contain the string str with c
-    idx = labelsInfo.IDX(contains(labelsInfo.LABEL, str));
-    labelsColors(idx+1,:) = repmat(c, length(idx), 1);
-end
