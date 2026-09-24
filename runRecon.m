@@ -1,6 +1,6 @@
 % Run the joint reconstruction of the time-resolved images and velocity
 % fields, as described in the manuscript "Time-resolved 3D imaging and
-% strain analysis for in vivo muscle dynamics"
+% strain analysis of the skeletal muscle"
 %
 % Copyright (c) 2026, UMC Utrecht
 % Max van Riel, m.h.c.vanriel-3@umcutrecht.nl

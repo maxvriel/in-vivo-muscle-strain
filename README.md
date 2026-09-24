@@ -1,10 +1,10 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21506263.svg)](https://doi.org/10.5281/zenodo.21506263)
 
-# Time-resolved 3D imaging and strain analysis for in vivo muscle dynamics
+# Time-resolved 3D imaging and strain analysis of the skeletal muscle
 
 This repository contains the MATLAB code used to generate the figures in the paper:
 
-**"Time-resolved 3D imaging and strain analysis for in vivo muscle dynamics"**  
+**"Time-resolved 3D imaging and strain analysis of the skeletal muscle"**  
 by Max H.C. van Riel, David G.J. Heesterbeek, Martijn Froeling, Tristan van Leeuwen, Cornelis A.T. van den Berg, and Alessandro Sbrizzi  
 University Medical Center Utrecht, The Netherlands
 
