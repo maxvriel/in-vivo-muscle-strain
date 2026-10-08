@@ -7,23 +7,45 @@
 clearvars
 close all
 
-% Set paths
+% Set paths to dependencies
 setup
 
+% Set paths to data and recon folders
 dataPath = './data';
 reconPath = './recon';
 
 %% Recon settings
+% Subject number (only the data for this volunteer is required to be downloaded)
 subjectIdx = 1;
+
+% Dynamic scan number (1-4) to reconstruct
+%   Dynamic scan 1: Passive muscles, cuff position 1
+%   Dynamic scan 2: Contracted muscles, cuff position 1
+%   Dynamic scan 3: Passive muscles, cuff position 2
+%   Dynamic scan 4: Contracted muscles, cuff position 2
 dynScanIdx = 1;
 
+% Number of resolution levels
 nResLevels = 2;
+
+% Number of iterations, one value per resolution level
 nIterations = [15, 5];
+
+% Number of readouts per time frame
+% Determines the temporal resolution of the reconstruction
 nReadoutsPerFrame = 4*32;
+
+% Regularization parameter for the motion model
 lambda = 100;
+
+% Regularization parameter for the reguarlization of the velocity field's spline coefficients
 mu = 10;
 
+% When true, save the reconstruction to ./recon
 saveResult = true;
+
+% When true, show the reconstructed image and displacement field 
+% at the time frame of maximum deformation after the reconstruction
 showResult = true;
 
 %% Load data

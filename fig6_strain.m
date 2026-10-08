@@ -15,11 +15,14 @@
 clearvars
 close all
 
-% Set paths
+% Set paths to dependencies
 setup
 
 % Load colormap
 load('colormaps/lajolla.mat')
+
+% Select the reconstruction files produced by runRecon.m
+recFiles = {'recon/volunteer1/dynamic1_recon.h5', 'recon/volunteer1/dynamic2_recon.h5'};
 
 %% Load segmentations
 [segmIm, segmLabels, segmSpacing, labelsInfo, labelsColors] = readSegmentation('data/volunteer1/');
@@ -29,8 +32,6 @@ segmMask = createMask(segmIm, prctile(segmIm(:), 65));
 segmMask = imdilate(segmMask, strel('disk', 3));
 
 %% Load data
-recFiles = {'recon/volunteer1/dynamic1_recon.h5', 'recon/volunteer1/dynamic2_recon.h5'};
-
 masks = cell(size(recFiles));
 segmLabelsReg = cell(size(recFiles));
 strains = cell(size(recFiles));
@@ -90,6 +91,7 @@ lineColor = 'r';
 
 climsStrain = [0, 0.8];
 
+% Create figure window
 widths = [0.2, 1, 0.1, 1, 0.1, 0.5, 0.6];
 heights = [0.15, 0.5, 0.15, 0.5, 0.1, 0.5, 0.1];
 axPos = createAxesPositions(widths, heights);
@@ -98,6 +100,7 @@ hFig = figure('Name', 'Strain', 'Color', 'white', 'DefaultAxesFontSize', 14);
 hFig.Position(1:3) = [1, 1, 1200];
 hFig.Position(4) = hFig.Position(3)*sum(heights)/sum(widths);
 
+% Show segmentation
 axes('Position', combineAxesPositions(axPos(1,:)), 'Visible', 'off')
 title('Segmentation', 'FontSize', 16, 'Visible', 'on')
 
@@ -146,7 +149,7 @@ set(hl, 'Parent', hAx, 'X', size(segmIm, 2)-20*[1,1], 'Y', size(segmIm, 3)-5+[-2
 text(size(segmIm, 2)-20+[0,0,-15,15], size(segmIm, 3)-5+[-3.75,3.75,0,0], ...
     {'H','F','A','P'}, 'FontSize', 10, 'Color', 'w', 'HorizontalAlignment', 'center')
 
-% Show muscle names
+% Show muscle names in legend
 legendIdx = [32,34,36,38,40,44,48,56,58,60,62,64,104].';
 hP = fill(NaN(3,length(legendIdx)), NaN(3,length(legendIdx)), 0, 'EdgeColor', 'none');
 set(hP, {'FaceColor'}, num2cell(labelsColors(legendIdx+1,:), 2))
@@ -159,6 +162,7 @@ hLeg = legend(hP, idxNames, 'FontSize', 10);
 hLeg.Position(1) = sum(axPos{1,3}([1,3])) + 0.1*widths(end)/sum(widths);
 hLeg.Position(2) = axPos{1,3}(2) + 0.5*axPos{1,3}(4) - 0.5*hLeg.Position(4);
 
+% Show strain maps
 axes('Position', combineAxesPositions(axPos(2,:)), 'Visible', 'off')
 title('Strain', 'FontSize', 16, 'Visible', 'on')
 
@@ -191,6 +195,7 @@ for i = 1:2
     plotContours(squeeze(segmLabelsReg{i}(46,:,:)).', labelsColors, 1)
 end
 
+% Colorbar
 hAx = axes('Position', axPos{3,3}, 'Visible', 'off');
 clim(hAx, climsStrain)
 colormap(hAx, lajolla)

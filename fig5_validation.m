@@ -16,17 +16,24 @@
 clearvars
 close all
 
-% Set paths
+% Set paths to dependencies
 setup
 
-%% Calculate SSIM values
+% Subjects to include
+% Subject 3 is excluded because of excessive inter-scan motion
 subjects = [1,2,4:9];
+
+% Number of validation images
 nVal = 9;
+
+% For which subject to show the images in the figure
+plotSubject = 1;
+
+%% Calculate SSIM values
 ssimImages = zeros(nVal, length(subjects));
 ssimImagesRef = zeros(nVal, length(subjects));
 ssimMotion = zeros(50, length(subjects));
 ssimMotionRef = zeros(50, length(subjects));
-plotSubject = 1;
 for iSubj = 1:length(subjects)
     recFile = sprintf('recon/volunteer%d/dynamic1_recon.h5', subjects(iSubj));
     valFile = sprintf('data/volunteer%d/validation.mrd', subjects(iSubj));
@@ -175,6 +182,7 @@ cmap = [0.1216    0.4667    0.7059;
         0.7373    0.7412    0.1333;
         0.0902    0.7451    0.8118];
 
+% Create figure window
 widths = [0.4, 1.5, 0.2, 1.5, 0.8, 1.5, 0.2, 1.5, 0.4];
 heights = [0.4, 1, 0.4, 1, 0.2, 1.5, 0.3];
 axPos = createAxesPositions(widths, heights);
@@ -186,6 +194,7 @@ hFig = figure('Name', 'Image Validation', 'Color', 'white', 'DefaultAxesFontSize
 hFig.Position(1:3) = [1, 1, 1200];
 hFig.Position(4) = round(hFig.Position(3)*sum(heights)/sum(widths));
 
+% Dynamic data line plot
 x = linspace(-pi/2, pi/2, 101).';
 x = x(1:end-1);
 y = [40*sin(x)+40;
@@ -208,13 +217,14 @@ set(hAx, 'XGrid', 'off')
 box off
 title('Dynamic data', 'FontSize', 12)
 
+% Dynamic data image
 hAx = axes('Position', axPos{2,1});
 imshow(plotIm);
 clim([0, Inf]);
 fig1Pos = tightPosition(hAx);
-
 annotation('rectangle', fig1Pos, 'Color', dyColor, 'LineWidth', 4);
 
+% Validation data line plot
 y = [zeros(100,1);
     10*sin(x)+10;
     20*ones(100,1);
@@ -250,6 +260,7 @@ set(hAx, 'XGrid', 'off')
 box off
 title('Validation data', 'FontSize', 12)
 
+% Validation data image
 hAx = axes('Position', axPos{2,2});
 imshow(plotImRef);
 clim([0, Inf]);
@@ -262,6 +273,7 @@ annotation('textbox', [sum([fig1Pos([1,3])-0.1/2, fig2Pos(1)])/2, fig1Pos(2)+fig
     'String', 'SSIM', 'FontSize', 12, 'HorizontalAlignment', 'center', ...
     'VerticalAlignment', 'bottom', 'EdgeColor', 'none')
 
+% SSIM plot for dynamic image validation
 plotPos = combineAxesPositions(axPos(3,1:2));
 plotPos(3) = 1/3;
 axes('Position', plotPos)
@@ -281,6 +293,7 @@ axes('Position', combineAxesPositions(axPos(1,1:2)), 'Visible', 'off');
 ht = title('Dynamic image validation', 'FontSize', 14, 'Visible', 'on');
 ht.Position(2) = 1.2;
 
+% Dynamic data line plot
 x = linspace(-pi/2, pi/2, 101).';
 x = x(1:end-1);
 y = [40*sin(x)+40;
@@ -304,6 +317,7 @@ set(hAx, 'XGrid', 'off')
 box off
 title('Dynamic data', 'FontSize', 12)
 
+% Dynamic data and displacements image
 hAx = axes('Position', axPos{1,4});
 imshow(plotImDyn, []);
 hold on
@@ -317,11 +331,13 @@ quiver(hAx, xGrid(nzIdx), yGrid(nzIdx), ux(nzIdx), uy(nzIdx), ...
     'LineWidth', 1, 'Color', arrowColor, 'AutoScale', 'off')
 annotation('rectangle', tightPosition(hAx), 'Color', dyColor, 'LineWidth', 4);
 
+% Initial image
 hAx = axes('Position', axPos{2,3});
 imshow(plotImInit, []);
 fig1Pos = tightPosition(hAx);
 annotation('rectangle', fig1Pos, 'Color', initColor, 'LineWidth', 4);
 
+% Warped image
 hAx = axes('Position', axPos{2,4});
 imshow(plotImWarp, []);
 fig2Pos = tightPosition(hAx);
@@ -338,6 +354,7 @@ annotation('textbox', [sum([fig1Pos([1,3])-0.1/2, fig2Pos(1)])/2, fig1Pos(2)+fig
     'String', 'SSIM', 'FontSize', 12, 'HorizontalAlignment', 'center', ...
     'VerticalAlignment', 'bottom', 'EdgeColor', 'none')
 
+% SSIM plot for motion field validation
 plotPos = combineAxesPositions(axPos(3,3:4));
 plotPos(1) = sum(plotPos([1,3])) - 1/3;
 plotPos(3) = 1/3;
@@ -353,6 +370,7 @@ grid on
 xlabel('Time (s)', 'FontSize', 12)
 ylabel('SSIM', 'FontSize', 12)
 
+% Legend
 hlVal = plot(NaN, NaN, 'k', 'LineWidth', 2);
 hlRef = plot(NaN, NaN, 'k--', 'LineWidth', 2);
 hlBlank = plot(NaN, NaN, 'w', 'LineWidth', 2);

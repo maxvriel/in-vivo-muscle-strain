@@ -6,8 +6,10 @@
 
 addpath(genpath('./src'))
 addpath('./colormaps')
+% Set this path to the ismrmrd/matlab folder
 % addpath('path/to/ismrmrd/matlab')
 if ~isenv('ELASTIXPATH')
+    % Set this to the folder containing the elastix and transformix
     % setenv('ELASTIXPATH', 'path/to/elastix')
 end
 

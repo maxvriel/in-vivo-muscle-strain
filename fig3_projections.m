@@ -10,12 +10,13 @@
 clearvars
 close all
 
-% Set paths
+% Set paths to dependencies
 setup
 
-%% Load data
+% Select the reconstruction file produced by runRecon.m
 recFile = 'recon/volunteer2/dynamic1_recon.h5';
 
+%% Load data
 im = h5read(recFile, '/recon/images');
 im = abs(im.real + 1i*im.imag);
 
@@ -26,13 +27,14 @@ climsIm = [0, max(abs(im(:)))];
 % Remove outer slices
 im = im(:, :, 8:57, :);
 
-% Location of the shown slices
+% Location of the slices and time frame shown in the figure
 xIdx = 40;
 yIdx = 39;
 zIdx = 25;
 tIdx = 23;
 
 %% Show figure
+% Create figure window
 widths = [0.1, 2, 0.15, 1, 0.3];
 heights = [0.1, 1, 0.15, 1, 0.1];
 axPos = createAxesPositions(widths, heights);

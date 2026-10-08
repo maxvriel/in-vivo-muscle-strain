@@ -15,13 +15,14 @@
 clearvars
 close all
 
-% Set paths
+% Set paths to dependencies
 setup
 
-%% Load data
+% Select the four reconstruction files produced by runRecon.m
 recFiles = {'recon/volunteer6/dynamic1_recon.h5', 'recon/volunteer6/dynamic2_recon.h5', ...
     'recon/volunteer6/dynamic3_recon.h5', 'recon/volunteer6/dynamic4_recon.h5'};
 
+%% Load data
 images = cell(size(recFiles));
 displacements = cell(size(recFiles));
 climsIm = [0,0];
@@ -47,12 +48,13 @@ for iRec = 1:length(recFiles)
     displacements{iRec} = displ(:,:,8:57,:,tMax) .* mask(:,:,8:57);
 end
 
-% Location of the shown slices
+% Location of the slices shown in the figure
 xIdx = 40;
 yIdx = 39;
 zIdx = 25;
 
 %% Show figure
+% Create figure window
 widths = [0.2, 0.1, 0.05, 1, 0.1, 1, 0.1, 0.5, 0.1];
 heights = [0.1, repmat([0.5, 0.1], 1, 4)];
 axPos = createAxesPositions(widths, heights);
@@ -69,9 +71,11 @@ ylabs = {{'Passive muscles', '(Dynamic scan 1)'}, {'Isometric contractions', '(D
 for iRec = 1:length(recFiles)
     % Transverse view
     hAx = axes('Position', axPos{iRec,2});
+    % Image
     imshow(images{iRec}(:,:,zIdx).')
     clim(climsIm)
     hold on
+    % Displacements
     xVec = 3:4:size(images{iRec},1);
     yVec = 3:4:size(images{iRec},2);
     ux = displacements{iRec}(xVec,yVec,zIdx,1).' / spacing(1);
@@ -80,6 +84,7 @@ for iRec = 1:length(recFiles)
     [xGrid,yGrid] = meshgrid(xVec,yVec);
     quiver(hAx, xGrid(nzIdx), yGrid(nzIdx), ux(nzIdx), uy(nzIdx), ...
         'LineWidth', 0.5, 'Color', arrowColor, 'AutoScale', 'off')
+    % Annotation
     ylabel(ylabs{iRec})
     if iRec == 1
         hl = annotation(hFig, 'line', 'Color', 'w', ...
@@ -99,9 +104,11 @@ for iRec = 1:length(recFiles)
 
     % Coronal view
     hAx = axes('Position', axPos{iRec,3});
+    % Image
     imshow(squeeze(images{iRec}(:,yIdx,:)).')
     clim(climsIm)
     hold on
+    % Displacements
     xVec = 3:4:size(images{iRec},1);
     zVec = 3:4:size(images{iRec},3);
     ux = squeeze(displacements{iRec}(xVec,yIdx,zVec,1)).' / spacing(1);
@@ -110,6 +117,7 @@ for iRec = 1:length(recFiles)
     [xGrid,zGrid] = meshgrid(xVec,zVec);
     quiver(hAx, xGrid(nzIdx), zGrid(nzIdx), ux(nzIdx), uz(nzIdx), ...
         'LineWidth', 0.5, 'Color', arrowColor, 'AutoScale', 'off')
+    % Annotation
     if iRec == 1
         hl = annotation(hFig, 'line', 'Color', 'w', ...
             'X', size(images{iRec},1) - 10 + [-5,5], ...
@@ -128,9 +136,11 @@ for iRec = 1:length(recFiles)
 
     % Sagittal view
     hAx = axes('Position', axPos{iRec,4});
+    % Image
     imshow(squeeze(images{iRec}(xIdx,:,:)).')
     clim(climsIm)
     hold on
+    % Displacements
     yVec = 3:4:size(images{iRec},2);
     zVec = 3:4:size(images{iRec},3);
     uy = squeeze(displacements{iRec}(xIdx,yVec,zVec,2)).' / spacing(2);
@@ -139,6 +149,7 @@ for iRec = 1:length(recFiles)
     [yGrid,zGrid] = meshgrid(yVec,zVec);
     quiver(hAx, yGrid(nzIdx), zGrid(nzIdx), uy(nzIdx), uz(nzIdx), ...
         'LineWidth', 0.5, 'Color', arrowColor, 'AutoScale', 'off')
+    % Annotation
     if iRec == 1
         hl = annotation(hFig, 'line', 'Color', 'w', ...
             'X', size(images{iRec},2) - 10 + [-5,5], ...
@@ -156,6 +167,7 @@ for iRec = 1:length(recFiles)
     end
 end
 
+% Labels on the left side of the figure
 axes('Position', combineAxesPositions(axPos(1:2,:)), 'Visible', 'off')
 ylabel('Cuff position 1', 'Visible', 'on')
 annotation('line', 0.04*[1,1], [sum(axPos{1,1}([2,4])), axPos{2,1}(2)])

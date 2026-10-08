@@ -12,12 +12,15 @@
 clearvars
 close all
 
-% Set paths
+% Set paths to dependencies
 setup
 
-% Load colormap
+% Load colormaps
 load('colormaps/lajolla.mat')
 load('colormaps/vik.mat')
+
+% Select the reconstruction files produced by runRecon.m
+recFiles = {'recon/volunteer1/dynamic1_recon.h5', 'recon/volunteer1/dynamic2_recon.h5'};
 
 %% Load segmentations
 [segmIm, segmLabels, segmSpacing, labelsInfo, labelsColors] = readSegmentation('data/volunteer1/');
@@ -31,8 +34,7 @@ segmLabelsReg = cell(1,2);
 strainTables = cell(1,2);
 for iDyn = 1:2
     % Load reconstruction
-    recFile = sprintf('recon/volunteer1/dynamic%d_recon.h5', iDyn);
-    [dynIm, dt, FOV, vel] = readRecon(recFile);
+    [dynIm, dt, FOV, vel] = readRecon(recFiles{iDyn});
     
     % Integrate velocity field to displacement field
     spacing = FOV ./ size(dynIm, 1:3)';
@@ -90,6 +92,7 @@ segmLabels = segmLabels(:,:,11:40);
 clims = [0, 0.6];
 climsDiff = [-0.5, 0.5];
 
+% Create figure window
 widths = [0.15, 0.5, 0.15, 0.5, 0.1, 0.5, 0.1, 0.5, 0.1];
 heights = [0.1, 0.5, 0.3];
 axPos = createAxesPositions(widths, heights);
@@ -99,6 +102,7 @@ hFig = figure('Name', 'Strain Difference 1', 'Color', 'white', 'DefaultAxesFontS
 hFig.Position(1:3) = [1, 1, 1200];
 hFig.Position(4) = hFig.Position(3)*sum(heights)/sum(widths);
 
+% Show segmentation
 hAx = axes('Position', axPos{1,1});
 imshow(abs(segmIm(1:end/2,:,16)).')
 hold on
@@ -112,7 +116,7 @@ set(hl, 'Parent', hAx, 'X', size(segmIm, 1)/2-20*[1,1], 'Y', size(segmIm, 2)-20+
 text(size(segmIm, 1)/2-20+[0,0,-15,15], size(segmIm, 2)-20+[-15,15,0,0], ...
     {'A','P','R','L'}, 'FontSize', 10, 'Color', 'w', 'HorizontalAlignment', 'center')
 
-% Show muscle names
+% Show muscle names in legend
 legendIdx = [32,34,36,38,40,44,48,56,58,60,62,64,104].';
 hP = fill(NaN(3,length(legendIdx)), NaN(3,length(legendIdx)), 0, 'EdgeColor', 'none');
 set(hP, {'FaceColor'}, num2cell(labelsColors(legendIdx+1,:), 2))
@@ -139,6 +143,7 @@ meanStrain = zeros(size(segmLabelsReg{1}));
 meanStrain(diffIdx) = (strainTables{2}.MeanStrain(labelIdx2(diffIdx)) - ...
     strainTables{1}.MeanStrain(labelIdx1(diffIdx)));
 
+% Show average strain per muscle
 axes('Position', axPos{1,2})
 imshow(maskImage(strainR(:,:,25).', strainR(:,:,25).' ~= 0, clims, lajolla, [0.5,0.5,0.5]))
 title('Passive muscles', 'FontSize', 16)
@@ -146,6 +151,8 @@ title('Passive muscles', 'FontSize', 16)
 hAx = axes('Position', axPos{1,3});
 imshow(maskImage(strainC(:,:,25).', strainC(:,:,25).' ~= 0, clims, lajolla, [0.5,0.5,0.5]))
 title('Isometric contractions', 'FontSize', 16)
+
+% Colorbar
 clim(hAx, clims)
 colormap(hAx, lajolla)
 cbPos = combineAxesPositions(axPos(1,2:3));
@@ -155,10 +162,13 @@ cb = colorbar(hAx, 'Location', 'southoutside', 'Position', cbPos, 'FontSize', 12
 yl = ylabel(cb, 'OSS (-)', 'FontSize', 12);
 yl.Position(2) = yl.Position(2) * 1.4;
 
+% Difference in average strain per muscle
 hAx = axes('Position', axPos{1,4});
 imshow(maskImage(meanStrain(:,:,25).', meanStrain(:,:,25).' ~= 0, climsDiff, vik, [0.5,0.5,0.5]))
 title('Difference', 'FontSize', 16)
 clim(hAx, climsDiff)
+
+% Colorbar
 colormap(hAx, vik)
 cbPos = axPos{1,4};
 cbPos(2) = cbPos(2) - 0.1;
@@ -167,6 +177,7 @@ cb = colorbar(hAx, 'Location', 'southoutside', 'Position', cbPos, 'FontSize', 12
 yl = ylabel(cb, '\DeltaOSS (-)', 'FontSize', 12);
 yl.Position(2) = yl.Position(2) * 1.4;
 
+% - and = symbols
 annotation('textbox', ...
     [0.5*(sum(axPos{1,2}([1,3]))+axPos{1,3}(1))-0.5*0.05, sum(axPos{1,2}([2,4]).*[1,0.5])-0.5*0.05, 0.05, 0.05], ...
     'String', char(8211), 'FontSize', 20, 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle', 'EdgeColor', 'none')

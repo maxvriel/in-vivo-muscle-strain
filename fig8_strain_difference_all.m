@@ -11,19 +11,23 @@
 clearvars
 close all
 
-% Set paths
+% Set paths to dependencies
 setup
 
-% Load colormap
+% Load colormaps
 load('colormaps/lajolla.mat')
 load('colormaps/vik.mat')
 
-%% Load data
+% Subjects to include
+% Subject 3 is excluded because of excessive inter-scan motion
 subjects = [1,2,4:9];
+
+%% Load data
 segmLabelsReg = cell(4, length(subjects));
 strainTables = cell(4, length(subjects));
 displMax = zeros(4, length(subjects));
 for iSubj = 1:length(subjects)
+    % Register the volunteer segmentation to each dynamic reconstruction.
     % Load segmentation
     segmFolder = sprintf('data/volunteer%d/', subjects(iSubj));
     [segmIm, segmLabels, segmSpacing, labelsInfo, labelsColors] = readSegmentation(segmFolder);
@@ -99,6 +103,7 @@ end
 clims = [-0.5, 0.5];
 cmap = vik;
 
+% Create figure window
 widths = [0.15, 0.5, 0.1, 0.5, 0.1, 0.5, 0.1, 0.5, 0.4];
 heights = [0.2, 0.5, 0.1, 0.5, 0.2, 0.5, 0.1, 0.5, 0.1];
 axPos = createAxesPositions(widths, heights);
@@ -113,6 +118,7 @@ for iSubj = 1:length(subjects)
         iDyn1 = (iCuffPos-1)*2+1;
         iDyn2 = iDyn1+1;
 
+        % Calculate mean strain difference per muscle
         [~, labelIdx1] = ismember(segmLabelsReg{iDyn1,iSubj}, strainTables{iDyn1,iSubj}.Index);
         [~, labelIdx2] = ismember(segmLabelsReg{iDyn1,iSubj}, strainTables{iDyn2,iSubj}.Index);
         labelIdx1 = labelIdx1 .* (segmLabelsReg{iDyn1,iSubj} ~= 0);
@@ -122,6 +128,7 @@ for iSubj = 1:length(subjects)
         meanStrain(diffIdx) = (strainTables{iDyn2,iSubj}.MeanStrain(labelIdx2(diffIdx)) - ...
             strainTables{iDyn1,iSubj}.MeanStrain(labelIdx1(diffIdx)));
 
+        % Show mean strain difference
         iRow = (iSubj > size(axPos,2))*2 + iCuffPos;
         iCol = mod(iSubj-1, size(axPos,2)) + 1;
         axes('Position', axPos{iRow,iCol})
@@ -139,6 +146,7 @@ for iSubj = 1:length(subjects)
     end
 end
 
+% Colorbar
 hAx = axes('Position', axPos{3,3}, 'Visible', 'off');
 clim(hAx, clims)
 colormap(hAx, vik)
@@ -148,10 +156,12 @@ cb.Position(1) = cb.Position(1) + cb.Position(3) + 0.2*widths(end)/sum(widths);
 cb.Position(3) = 0.015;
 ylabel(cb, '\DeltaOSS (-)', 'FontSize', 12, 'Rotation', -90)
 
+% Title
 hAx = axes('Position', combineAxesPositions(axPos(1,:)), 'Visible', 'off');
 ht = title(hAx, 'Strain difference', 'FontSize', 16, 'Visible', 'on');
 ht.Position(2) = ht.Position(2) + 0.16;
 
+% Central line
 annotation('line', [0, 1] + ([widths(1), -widths(end)] + 0*[-0.5,0.5]*widths(1))/sum(widths), ...
     axPos{2,1}(2) - 0.4*heights(5)/sum(heights) * [1,1], ...
     'LineWidth', 1.5)
