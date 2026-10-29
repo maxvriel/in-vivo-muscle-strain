@@ -1,5 +1,5 @@
-% Creates Figure 9
-% Figure 9: Mean octahedral shear strain difference in the central
+% Creates Figure 8
+% Figure 8: Mean octahedral shear strain difference in the central
 % transverse slice at the maximum deformation over each segmented muscle
 % between the scan with passive muscles and the scan during the isometric
 % contraction. Note that in all cases, the biggest decrease appears in the

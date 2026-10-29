@@ -1,5 +1,5 @@
-% Creates Figure 8
-% Figure 8: From left to right: Out-of-phase image from the Dixon scan with
+% Creates Figure 7
+% Figure 7: From left to right: Out-of-phase image from the Dixon scan with
 % the contours of the segmented muscles overlaid on top for volunteer 1,
 % mean octahedral shear strain values at the maximum deformation for each
 % segmented muscle in dynamic scans 1 and 2, and muscle-wise differences in

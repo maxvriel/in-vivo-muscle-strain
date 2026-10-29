@@ -1,5 +1,5 @@
-% Creates Figure 7
-% Figure 7: Top: Out-of-phase image from the Dixon scan with the contours
+% Creates Figure 6
+% Figure 6: Top: Out-of-phase image from the Dixon scan with the contours
 % of the segmented muscles overlaid on top for volunteer 1. The red lines
 % in each plane show the slices shown in the other two orthogonal planes.
 % Bottom: Octahedral shear strain values for dynamic scans 1 and 2 at the
